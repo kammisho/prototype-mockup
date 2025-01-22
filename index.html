@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concept Prototype Mockup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f9f9f9;
+    }
+    .container {
+      width: 90%;
+      max-width: 600px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option {
+      padding: 10px 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #e3f2fd;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .option:hover {
+      background: #bbdefb;
+    }
+    .progress {
+      margin: 20px 0;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .preview {
+      display: none;
+      margin-top: 20px;
+    }
+    .preview img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="question" class="question">What would you like to do?</div>
+    <div id="options" class="options">
+      <div class="option" data-answer="tarot">Play with a tarot card game</div>
+      <div class="option" data-answer="journal">Keep track of daily notes</div>
+      <div class="option" data-answer="management">Organize and manage items</div>
+    </div>
+    <div id="progress" class="progress">Step 1 of 3</div>
+    <div id="preview" class="preview">
+      <h3>Your App Preview:</h3>
+      <img id="previewImage" src="" alt="Preview">
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What would you like to do?",
+        options: [
+          { text: "Play with a tarot card game", answer: "tarot" },
+          { text: "Keep track of daily notes", answer: "journal" },
+          { text: "Organize and manage items", answer: "management" },
+        ],
+      },
+      {
+        question: "What data type will you use?",
+        options: [
+          { text: "Cards", answer: "tarot" },
+          { text: "Text or notes", answer: "journal" },
+          { text: "Images or photos", answer: "management" },
+        ],
+      },
+      {
+        question: "Choose your app's design style:",
+        options: [
+          { text: "Mystical", answer: "tarot" },
+          { text: "Colorful", answer: "journal" },
+          { text: "Simple", answer: "management" },
+        ],
+      },
+    ];
+
+    const previews = {
+      tarot: "https://via.placeholder.com/300x200?text=Tarot+App",
+      journal: "https://via.placeholder.com/300x200?text=Journal+App",
+      management: "https://via.placeholder.com/300x200?text=Management+App",
+    };
+
+    let currentStep = 0;
+    let selectedApp = null;
+
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
+    const progressElement = document.getElementById("progress");
+    const previewElement = document.getElementById("preview");
+    const previewImage = document.getElementById("previewImage");
+
+    function loadQuestion(step) {
+      const questionData = questions[step];
+      questionElement.textContent = questionData.question;
+      optionsElement.innerHTML = "";
+
+      questionData.options.forEach(option => {
+        const optionElement = document.createElement("div");
+        optionElement.className = "option";
+        optionElement.textContent = option.text;
+        optionElement.dataset.answer = option.answer;
+        optionsElement.appendChild(optionElement);
+      });
+
+      progressElement.textContent = `Step ${step + 1} of ${questions.length}`;
+    }
+
+    optionsElement.addEventListener("click", event => {
+      if (event.target.classList.contains("option")) {
+        selectedApp = event.target.dataset.answer;
+        currentStep++;
+
+        if (currentStep < questions.length) {
+          loadQuestion(currentStep);
+        } else {
+          showPreview(selectedApp);
+        }
+      }
+    });
+
+    function showPreview(app) {
+      questionElement.style.display = "none";
+      optionsElement.style.display = "none";
+      progressElement.style.display = "none";
+
+      previewImage.src = previews[app];
+      previewElement.style.display = "block";
+    }
+
+    loadQuestion(currentStep);
+  </script>
+</body>
+</html>
