@@ -53,19 +53,20 @@
     }
     .flowchart {
       position: absolute;
-      top: -10px;
+      top: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 90%;
-      max-width: 500px;
+      max-width: 600px;
       background: white;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       padding: 10px;
-      overflow-x: auto;
+      overflow-y: auto;
       display: flex;
+      flex-direction: column;
       gap: 10px;
-      align-items: center;
+      align-items: flex-start;
     }
     .flowchart-node {
       background: #e0f7fa;
@@ -74,8 +75,33 @@
       padding: 10px;
       font-size: 0.9rem;
       text-align: center;
-      min-width: 100px;
-      white-space: nowrap;
+      min-width: 200px;
+      position: relative;
+      animation: slide-in 0.5s ease-out;
+    }
+    .flowchart-node::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 20px;
+      background: #00796b;
+    }
+    .flowchart-node:last-child::after {
+      display: none;
+    }
+
+    @keyframes slide-in {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -145,10 +171,10 @@
       if (event.target.classList.contains("option")) {
         const selectedText = event.target.textContent;
 
-        // Add the selected answer to the flowchart
+        // Add the selected question and answer to the flowchart
         const node = document.createElement("div");
         node.className = "flowchart-node";
-        node.textContent = selectedText;
+        node.textContent = `${questions[currentStep].question} → ${selectedText}`;
         flowchart.appendChild(node);
 
         currentStep++;
