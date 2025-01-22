@@ -58,6 +58,12 @@
       max-width: 100%;
       border-radius: 10px;
     }
+    .preview-details {
+      margin-top: 10px;
+      text-align: left;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
@@ -72,6 +78,7 @@
     <div id="preview" class="preview">
       <h3>Your App Preview:</h3>
       <img id="previewImage" src="" alt="Preview">
+      <div id="previewDetails" class="preview-details"></div>
     </div>
   </div>
 
@@ -104,9 +111,18 @@
     ];
 
     const previews = {
-      tarot: "https://via.placeholder.com/300x200?text=Tarot+App",
-      journal: "https://via.placeholder.com/300x200?text=Journal+App",
-      management: "https://via.placeholder.com/300x200?text=Management+App",
+      tarot: {
+        image: "https://via.placeholder.com/300x200?text=Tarot+App",
+        details: "Your app will include a mystical tarot card deck with 22 major arcana cards. Perfect for quick readings or fun games with friends."
+      },
+      journal: {
+        image: "https://via.placeholder.com/300x200?text=Journal+App",
+        details: "Your app will feature a colorful daily journal layout, allowing you to write notes, track moods, and set reminders."
+      },
+      management: {
+        image: "https://via.placeholder.com/300x200?text=Management+App",
+        details: "Your app will include AI-powered tagging for easy organization of your items. Upload photos and get smart category suggestions."
+      },
     };
 
     let currentStep = 0;
@@ -117,6 +133,7 @@
     const progressElement = document.getElementById("progress");
     const previewElement = document.getElementById("preview");
     const previewImage = document.getElementById("previewImage");
+    const previewDetails = document.getElementById("previewDetails");
 
     function loadQuestion(step) {
       const questionData = questions[step];
@@ -152,7 +169,8 @@
       optionsElement.style.display = "none";
       progressElement.style.display = "none";
 
-      previewImage.src = previews[app];
+      previewImage.src = previews[app].image;
+      previewDetails.textContent = previews[app].details;
       previewElement.style.display = "block";
     }
 
